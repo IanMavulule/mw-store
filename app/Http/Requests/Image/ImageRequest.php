@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Products;
+namespace App\Http\Requests\Image;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductsRequest extends FormRequest
+class ImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,15 @@ class ProductsRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            return [
+                'sort_order' => ['required', 'integer', 'min:0'],
+            ];
+        }
+
         return [
-            'description' => ['required', 'string', 'max:255', 'min:3'],
-            'brand_id' => ['required', 'integer', 'exists:brands,id'],
-            'article_id' => ['required', 'integer', 'exists:articles,id'],
-            'base_price' => ['required', 'numeric', 'min:0'],
-            'bought_price' => ['required', 'numeric', 'min:0'],
+            'images' => ['required', 'array', 'max:10'],
+            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
         ];
     }
 }

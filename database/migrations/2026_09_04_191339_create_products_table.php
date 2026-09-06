@@ -15,15 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('description');
             $table->foreignId('brand_id')
-                    ->constrained()
-                    ->cascadeOnDelete()
-                    ->cascadeOnUpdate();
+                ->constrained()
+                ->restrictOnDelete();
             $table->foreignId('article_id')
-                    ->constrained()
-                    ->cascadeOnDelete()
-                    ->cascadeOnUpdate();
-            $table->decimal('base_price', 10,2);
-            $table->decimal('bought_price', 10,2);
+                ->constrained()
+                ->restrictOnDelete();
+            $table->decimal('base_price', 10, 2);
+            $table->decimal('bought_price', 10, 2);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
